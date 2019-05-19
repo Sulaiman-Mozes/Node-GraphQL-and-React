@@ -2,6 +2,7 @@ const express = require('express');
 const graphQL = require('express-graphql');
 const mongoose = require('mongoose');
 const logger = require('morgan');
+const cors = require('cors');
 
 const schema = require('./schema')
 if (process.env.NODE_ENV !== 'production') {
@@ -10,8 +11,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.SERVER_PORT || 5000
 const app = express();
+app.use(cors())
 app.use(logger('dev'))
 
 const mongoURL = () => {
@@ -27,8 +29,8 @@ const mongoURL = () => {
 }
 
 mongoURL()
-.then(() => console.log('connected to database'))
-.catch(() => console.log('failed to connect to the database'));
+    .then(() => console.log('connected to database'))
+    .catch(() => console.log('failed to connect to the database'));
 
 
 app.use('/grahpql', graphQL({
